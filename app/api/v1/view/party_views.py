@@ -120,5 +120,21 @@ class Party(Resource):
             }
         return{
             'Message':'Party not found',
-            'status':204,
+            'status':404,
         }
+
+    def patch(self,party_id):
+        data = parser.parse_args
+        party = self.dt.find(party_id)
+        if party:
+            party.update(data)
+            return{
+                'Message':'party successfully updated',
+                'status':200,
+                'data':party
+            }
+        return{
+            'Message':'Party not found',
+            'status':404,
+            }
+ 

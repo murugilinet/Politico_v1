@@ -96,8 +96,9 @@ class Office(Resource):
             }
 
     def delete(self, office_id):
-        office = self.dt.remove(office_id)
+        office = self.dt.find(office_id)
         if office:
+            self.dt.remove(office_id)
             return {
                 'Message':'Office successfully deleted',
                 'status':204
