@@ -88,4 +88,25 @@ class Parties(Resource):
             'Message':'Returned successfully',
             'status':200,
             'data':self.dt.all()
-            } 
+            }
+
+            
+class Party(Resource):
+    #class and methods creates endpoints that apply to a single party only
+    def __init__(self):
+         self.dt = Partybase()
+       
+    def get(self, party_id):
+        party = self.dt.find(party_id)
+        if not party:
+            return {
+                'Message':'Party not found',
+                'status':404
+            }
+        return{
+            'Message':'The party has been returned successfully',
+            'status':200,
+            'data':party
+        }
+
+
