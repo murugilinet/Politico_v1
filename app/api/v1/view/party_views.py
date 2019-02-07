@@ -76,3 +76,16 @@ class Parties(Resource):
                 'status':201,
                 'data':party
              }
+    
+    def get(self):
+        if self.dt.all() == []:    
+            return {
+                    'Message':'Parties not found',
+                    'status':400,
+                }
+        else:
+            return{
+            'Message':'Returned successfully',
+            'status':200,
+            'data':self.dt.all()
+            } 
