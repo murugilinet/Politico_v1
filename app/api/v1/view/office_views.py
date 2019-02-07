@@ -4,6 +4,7 @@ from app.api.v1.model.models import Model
 
 Officedb = []
 
+
 parser = reqparse.RequestParser()
 parser.add_argument(
     "name",type = str,required = True,help = "Name field is required"
@@ -74,4 +75,22 @@ class Offices(Resource):
                 'data':self.dt.all()
                 }
 
-    
+
+class Office(Resource):
+    #class and its methods creates endpoints that act on a single office
+    def __init__(self):
+        self.dt = Officebase()
+
+
+    def get(self, office_id):
+        office = self.dt.find(office_id)
+        if not office:
+            return {
+                'Message':'Office not found',
+                'status':404,
+            }
+        return{
+            'Message':'The office has been returned successfully',
+            'status':200,
+            'data':office
+            }
