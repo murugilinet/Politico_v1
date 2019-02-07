@@ -1,5 +1,5 @@
 class Model():
-    '''This class includes functions of requests on both political parties and offices'''
+    '''Includes functions of requests on both political parties and offices'''
     def __init__(self,items):
         self.items = items
     def all(self):

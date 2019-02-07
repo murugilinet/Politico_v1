@@ -59,3 +59,19 @@ class Offices(Resource):
                 'status':201,
                 'Data': office
                 }
+
+
+    def get(self):
+        if self.dt.all() == []:    
+            return {
+                    'Message':'Offices not found',
+                    'status':400
+                }
+        else:
+            return {    
+                'Message':'Returned successfully',
+                'status':200,
+                'data':self.dt.all()
+                }
+
+    
