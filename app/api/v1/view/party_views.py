@@ -90,7 +90,7 @@ class Parties(Resource):
             'data':self.dt.all()
             }
 
-            
+
 class Party(Resource):
     #class and methods creates endpoints that apply to a single party only
     def __init__(self):
@@ -110,3 +110,15 @@ class Party(Resource):
         }
 
 
+    def delete(self, party_id):
+        party = self.dt.find(party_id)
+        if party:
+            self.dt.remove(party_id)
+            return {
+                'Message':'Party successfully deleted',
+                'status':204,
+            }
+        return{
+            'Message':'Party not found',
+            'status':204,
+        }
