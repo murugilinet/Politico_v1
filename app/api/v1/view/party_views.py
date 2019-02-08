@@ -127,7 +127,7 @@ class Party(Resource):
         data = parser.parse_args
         party = self.dt.find(party_id)
         if party:
-            party.update(data)
+            party.update(party)
             return{
                 'Message':'party successfully updated',
                 'status':200,

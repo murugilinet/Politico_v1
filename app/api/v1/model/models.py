@@ -29,7 +29,9 @@ class Model():
     def update(self, id):
         item = self.find(id)
         if item:
-            return self.items.update(item)
+            data = self.items.update(item)
+            response = self.items.save(data) 
+            return response
     
     def valid(self,data):
         if data.isspace() or data == "":
