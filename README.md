@@ -9,16 +9,16 @@
 ## Deployment
 * Click here to view hosted application [hosted](https://politico-linet.herokuapp.com/api/v1/offices)
 ## Endpoints
-|   METHOD       |    URl                       | FUNCTION
+|   METHOD       |    URL                      | FUNCTION
 |  ------------  | ----------                   |  ---------
-|   POST         | app/api/v1/offices           |  create an office 
-|   POST         | app/api/v1/parties           |  create a party
-|   GET          | app/api/v1/offices           |  find all offices
-|   GET          | app/api/v1/parties           | find all parties
-|   GET          | app/api/v1/offices/office_id | find a specific office with the office_id
-|   GET          | app/api/v1/parties/party_id  | find a specific party with the party_id
-|   DELETE       | app/api/v1/offices/office_id | delete a specific office with the office_id
-|   DELETE       | app/api/v1/parties/party_id  | delete a specific party with  the party_id
+|   POST         | /api/v1/offices           |  create an office 
+|   POST         | /api/v1/parties           |  create a party
+|   GET          | /api/v1/offices           |  find all offices
+|   GET          | /api/v1/parties           | find all parties
+|   GET          | /api/v1/offices/office_id | find a specific office with the office_id
+|   GET          | /api/v1/parties/party_id  | find a specific party with the party_id
+|   DELETE       | /api/v1/offices/office_id | delete a specific office with the office_id
+|   DELETE       | /api/v1/parties/party_id  | delete a specific party with  the party_id
 
 ## Tools Used
 
