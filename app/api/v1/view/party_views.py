@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask,request,make_response,jsonify
 from flask_restful import Resource,reqparse
 from app.api.v1.model.models import Model
 
@@ -54,10 +54,9 @@ class Parties(Resource):
                } 
 
 
-        response = {
-            'message':'input on all fields is required',
-            'status':417
-            }
+        response = make_response(jsonify({
+            'Message':'Input is required',
+            }),400)
         if self.dt.valid (data['name']) ==  False:
             return response
         if self.dt.valid (data['abbreviations']) ==  False:
@@ -70,25 +69,27 @@ class Parties(Resource):
             return response
         if self.dt.valid (data['logoUrl']) == False:
             return response
+        elif self.dt.length (data['name']) == False:
+            return make_response(jsonify({
+                'Message':'Name field too short'
+            }),400)
         self.dt.save(party)
-        return{
+        return make_response(jsonify({
                 'Message': 'Successfully saved',
-                'status':201,
                 'data':party
-             }
+             }),201)
     
     def get(self):
         if self.dt.all() == []:    
-            return {
+            return make_response(jsonify({
                     'Message':'Parties not found',
-                    'status':400,
-                }
+                    'data': self.dt.all
+                }),404)
         else:
-            return{
+            return make_response(jsonify({
             'Message':'Returned successfully',
-            'status':200,
             'data':self.dt.all()
-            }
+            }),200)
 
 
 class Party(Resource):
@@ -99,42 +100,36 @@ class Party(Resource):
     def get(self, party_id):
         party = self.dt.find(party_id)
         if not party:
-            return {
-                'Message':'Party not found',
-                'status':404
-            }
-        return{
+            return make_response(jsonify({
+                'Message':'Party not found'
+            }),404)
+        return make_response(jsonify({
             'Message':'The party has been returned successfully',
-            'status':200,
             'data':party
-        }
-
+        }),200)
 
     def delete(self, party_id):
         party = self.dt.find(party_id)
         if party:
             self.dt.remove(party_id)
-            return {
+            return make_response(jsonify({
                 'Message':'Party successfully deleted',
-                'status':204,
-            }
-        return{
+                'data':party
+            }),200)
+        return make_response(jsonify({
             'Message':'Party not found',
-            'status':404,
-        }
+           }),404)
 
     def patch(self,party_id):
         data = parser.parse_args
         party = self.dt.find(party_id)
         if party:
-            party.update(party)
-            return{
+            party.update(data)
+            return make_response(jsonify({
                 'Message':'party successfully updated',
-                'status':200,
                 'data':party
-            }
-        return{
-            'Message':'Party not found',
-            'status':404,
-            }
+            }),200)
+        return make_response(jsonify({
+            'Message':'Party not found'
+            }),404)
  
