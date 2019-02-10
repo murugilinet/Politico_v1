@@ -36,4 +36,7 @@ class Model():
     def valid(self,data):
         if data.isspace() or data == "":
             return False
+    def length(self,data):
+        if len(data) < 5:
+            return False
             

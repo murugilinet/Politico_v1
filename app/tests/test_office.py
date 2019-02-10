@@ -1,5 +1,6 @@
 import unittest
 import json
+from flask import make_response,jsonify
 from app import create_app
 from app.api.v1.view.office_views import Offices, Office
 
@@ -27,9 +28,9 @@ class Testoffice(unittest.TestCase):
             'education':'O-level'
         }
         self.test_office2 = {
-            'name':'President',
+            'name':'Pre',
             'age':'21',
-            'offie_type':'state',
+            'office_type':'state',
             'education':'Degree'
         }
 
@@ -40,22 +41,7 @@ class Testoffice(unittest.TestCase):
                      headers = {'content-type':'application/json'}) 
          result = json.loads(response.data)
          self.assertEqual(result['Message'],'Successfully saved')
-         self.assertEqual(response.status_code,200)
-
-         response2 = self.app.post('/api/v1/offices',
-                     data = json.dumps(self.test_office_missing_name),
-                     headers = {'content-type':'application/json'}) 
-         result = json.loads(response2.data)
-         self.assertEqual(result['Message'],'Input is required')
-         self.assertEqual(response2.status_code,200)
-
-         response3 = self.app.post('/api/v1/offices',
-                     data = json.dumps(self.test_office_missing_office_type),
-                     headers = {'content-type':'application/json'}) 
-         result = json.loads(response3.data)
-         self.assertEqual(result['Message'],'Input is required')
-         self.assertEqual(response3.status_code,200)
-
+         self.assertEqual(response.status_code,201)
 
     def test_find_office_usingid(self):
         self.app.post('/api/v1/offices',
@@ -65,6 +51,30 @@ class Testoffice(unittest.TestCase):
         result = json.loads(response.data)
         self.assertEqual(result['Message'],'The office has been returned successfully')
         self.assertEqual(response.status_code,200)
+
+    def test_missing_name(self):
+         response = self.app.post('/api/v1/offices',
+                     data = json.dumps(self.test_office_missing_name),
+                     headers = {'content-type':'application/json'}) 
+         result = json.loads(response.data)
+         self.assertEqual(result['Message'],'Input is required')
+         self.assertEqual(response.status_code,400)
+
+    def test_missing_office_type(self):
+         response = self.app.post('/api/v1/offices',
+                     data = json.dumps(self.test_office_missing_office_type),
+                     headers = {'content-type':'application/json'}) 
+         result = json.loads(response.data)
+         self.assertEqual(result['Message'],'Input is required')
+         self.assertEqual(response.status_code,400)
+
+    def test_short_office_name(self):
+         response = self.app.post('/api/v1/offices',
+                     data = json.dumps(self.test_office2),
+                     headers = {'content-type':'application/json'}) 
+         result = json.loads(response.data)
+         self.assertEqual(result['Message'],'Name field too short')
+         self.assertEqual(response.status_code,400)
 
 
     def test_remove_office_usingid(self):
