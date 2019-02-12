@@ -9,7 +9,7 @@ parser.add_argument(
     "name",type = str,required = True,help = "Name field is required"
 )
 parser.add_argument(
-    "age",type = int, required =True,help = "age field required"
+    "age",type = str, required =True,help = "age field required"
 )
 parser.add_argument(
     "office_type",type = str, required =True,help = "type field required"
@@ -41,18 +41,24 @@ class Offices(Resource):
                 }
 
         response = make_response(jsonify({
-            'Message': 'Input is required',
+            'Message': 'Correct input required',
         }),400) 
-        if self.dt.valid(data['name']) == False: 
+        if self.dt.valid_type(data['name']) == False: 
             return response
-        if self.dt.valid(data['office_type']) == False:
+        if self.dt.valid_digits(data['age']) == False: 
             return response
-        if self.dt.valid(data['education']) == False: 
+        if self.dt.valid_type(data['office_type']) == False:
             return response
-        elif self.dt.length(data['name']) ==False:
+        if self.dt.valid_type(data['education']) == False: 
+            return response
+        elif self.dt.length_long(data['name']) ==False:
             return make_response(jsonify({
                 'Message':'Name field too short'
-                 }),400)
+                 }),411)
+        elif self.dt.valid_officetype(data) == False:
+            return make_response(jsonify({
+                'Message':'Invalid office'
+                 }),422)
         else:        
             self.dt.save(office)
             return make_response(jsonify({

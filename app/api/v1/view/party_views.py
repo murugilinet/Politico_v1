@@ -55,24 +55,32 @@ class Parties(Resource):
 
 
         response = make_response(jsonify({
-            'Message':'Input is required',
+            'Message':'Correct input required',
             }),400)
-        if self.dt.valid (data['name']) ==  False:
+        if self.dt.party_exists(data['name']) ==  False:
+            return make_response(jsonify({
+                'Message': 'Party already exists'
+             }),401)
+        if self.dt.valid_type(data['name']) ==  False:
             return response
-        if self.dt.valid (data['abbreviations']) ==  False:
+        if self.dt.valid_type(data['abbreviations']) ==  False:
             return response
-        if self.dt.valid (data['chairperson']) ==  False:
+        if self.dt.valid_type(data['chairperson']) ==  False:
             return response
-        if self.dt.valid (data['members']) == False:
+        if self.dt.valid_digits(data['members']) == False:
             return response
-        if self.dt.valid (data['address']) == False:
+        if self.dt.valid(data['address']) == False:
             return response
-        if self.dt.valid (data['logoUrl']) == False:
+        if self.dt.valid_type(data['logoUrl']) == False:
             return response
-        elif self.dt.length (data['name']) == False:
+        elif self.dt.length_long(data['name']) == False:
             return make_response(jsonify({
                 'Message':'Name field too short'
-            }),400)
+            }),411)
+        elif self.dt.length_short(data['abbreviations']) ==False:
+            return make_response(jsonify({
+                'Message':'abbreviations too long'
+             }),411)
         self.dt.save(party)
         return make_response(jsonify({
                 'Message': 'Successfully saved',
@@ -82,7 +90,7 @@ class Parties(Resource):
     def get(self):
         if self.dt.all() == []:    
             return make_response(jsonify({
-                    'Message':'Parties not found',
+                    'Message':'Successfully returned',
                     'data': self.dt.all
                 }),404)
         else:
@@ -124,8 +132,8 @@ class Party(Resource):
         data = parser.parse_args
         party = self.dt.find(party_id)
         if party:
-            party.update(data)
-            return make_response(jsonify({
+              party.update(data)
+              return make_response(jsonify({
                 'Message':'party successfully updated',
                 'data':party
             }),200)
