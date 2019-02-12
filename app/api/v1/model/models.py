@@ -26,17 +26,38 @@ class Model():
         if item:
             return self.items.remove(item)
     
-    def update(self, id):
+    def update(self, id,data):
         item = self.find(id)
         if item:
-            data = self.items.update(item)
-            response = self.items.save(data) 
-            return response
+            return self.items.update(item)
+    
     
     def valid(self,data):
-        if data.isspace() or data == "":
-            return False
-    def length(self,data):
+        if data.isalnum:
+            return True
+        return False
+    
+    def valid_type(self,data):
+        if data.isalpha():
+            return True
+        return False
+    
+    def valid_digits(self,data):
+        if data.isdigit():
+            return True
+        return False
+        
+    def length_long(self,data):
         if len(data) < 5:
             return False
-            
+    def length_short(self,data):
+        if len(data) > 4:
+            return False
+    def valid_officetype(self,data):
+        if data['office_type'] == 'state' or  data['office_type'] == 'federal' or data['office_type'] =='legislature' or data['office_type'] =='local-community':
+            return True
+        return False
+    def party_exists(self, data):
+        for item in self.items:    
+            if data == item['name']:
+                return False
