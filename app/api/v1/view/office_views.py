@@ -43,22 +43,29 @@ class Offices(Resource):
         response = make_response(jsonify({
             'Message': 'Correct input required',
         }),400) 
+       
         if self.dt.valid_type(data['name']) == False: 
             return response
+         
         if self.dt.valid_digits(data['age']) == False: 
             return response
+      
         if self.dt.valid_type(data['office_type']) == False:
             return response
+        
         if self.dt.valid_type(data['education']) == False: 
             return response
+        
         elif self.dt.length_long(data['name']) ==False:
             return make_response(jsonify({
                 'Message':'Name field too short'
                  }),411)
+       
         elif self.dt.valid_officetype(data) == False:
             return make_response(jsonify({
                 'Message':'Invalid office'
                  }),422)
+       
         else:        
             self.dt.save(office)
             return make_response(jsonify({
@@ -72,6 +79,7 @@ class Offices(Resource):
                     'Message':'Successfully returned',
                     'Data':self.dt.all()
                 }),200)
+      
         else:
             return make_response(jsonify({    
                    'Message':'Returned successfully',
@@ -90,6 +98,7 @@ class Office(Resource):
             return make_response(jsonify({
                 'Message':'Office not found',
             }),404)
+        
         return make_response(jsonify({
             'Message':'The office has been returned successfully',
             'Data':office
@@ -103,6 +112,7 @@ class Office(Resource):
                 'Message':'Office successfully deleted',
                 'Data':office
             }),200)
+       
         return make_response(jsonify({
             'Message':'The office not found',
            }),404)

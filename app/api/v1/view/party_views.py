@@ -57,42 +57,54 @@ class Parties(Resource):
         response = make_response(jsonify({
             'Message':'Correct input required',
             }),400)
+      
         if self.dt.party_exists(data['name']) ==  False:
             return make_response(jsonify({
                 'Message': 'Party already exists'
              }),401)
+      
         if self.dt.valid_type(data['name']) ==  False:
             return response
+       
         if self.dt.valid_type(data['abbreviations']) ==  False:
             return response
+       
         if self.dt.valid_type(data['chairperson']) ==  False:
             return response
+       
         if self.dt.valid_digits(data['members']) == False:
             return response
+        
         if self.dt.valid(data['address']) == False:
             return response
+      
         if self.dt.valid_type(data['logoUrl']) == False:
             return response
+       
         elif self.dt.length_long(data['name']) == False:
             return make_response(jsonify({
                 'Message':'Name field too short'
             }),411)
+      
         elif self.dt.length_short(data['abbreviations']) ==False:
             return make_response(jsonify({
                 'Message':'abbreviations too long'
              }),411)
         self.dt.save(party)
+      
         return make_response(jsonify({
                 'Message': 'Successfully saved',
                 'data':party
              }),201)
     
     def get(self):
+       
         if self.dt.all() == []:    
             return make_response(jsonify({
                     'Message':'Successfully returned',
                     'data': self.dt.all
                 }),404)
+       
         else:
             return make_response(jsonify({
             'Message':'Returned successfully',
@@ -111,6 +123,7 @@ class Party(Resource):
             return make_response(jsonify({
                 'Message':'Party not found'
             }),404)
+       
         return make_response(jsonify({
             'Message':'The party has been returned successfully',
             'data':party
@@ -124,19 +137,22 @@ class Party(Resource):
                 'Message':'Party successfully deleted',
                 'data':party
             }),200)
+       
         return make_response(jsonify({
             'Message':'Party not found',
            }),404)
 
     def patch(self,party_id):
-        data = parser.parse_args
+        data = parser.parse_args()
         party = self.dt.find(party_id)
         if party:
-              party.update(data)
-              return make_response(jsonify({
-                'Message':'party successfully updated',
-                'data':party
-            }),200)
+            for party['name'] in party:
+                party.update(data)
+                return make_response(jsonify({
+                    'Message':'party successfully updated',
+                    'data':party
+                }),200)
+    
         return make_response(jsonify({
             'Message':'Party not found'
             }),404)
