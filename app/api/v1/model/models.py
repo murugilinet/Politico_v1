@@ -26,12 +26,6 @@ class Model():
         if item:
             return self.items.remove(item)
     
-    def update(self, id,data):
-        item = self.find(id)
-        if item:
-            return self.items.update(item)
-    
-    
     def valid(self,data):
         if data.isalnum:
             return True
